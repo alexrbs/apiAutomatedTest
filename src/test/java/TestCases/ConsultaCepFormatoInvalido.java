@@ -9,7 +9,7 @@ public class ConsultaCepFormatoInvalido extends BaseTestViaCep {
 
     @Test
     public void consultaCepFormatoInvalido(){
-        String cep = "99999-999";
+        String cep = "99888-888";
         given()
                 .spec(requestSpec)
                 .when()
