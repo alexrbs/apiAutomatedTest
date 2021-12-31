@@ -1,9 +1,12 @@
 package TestCases;
 
-import BaseTests.BaseTestViaCep;
+import BaseTests.ViaCep.BaseTestViaCep;
 import io.restassured.response.Response;
 import org.testng.annotations.Test;
 
+import static Models.BodyViaCepModel.createEmptyValuesFile;
+import static Models.BodyViaCepModel.createResponseBodyFile;
+import static Utils.FileOperations.createFile;
 import static io.restassured.RestAssured.given;
 
 public class ConsultaCepValido extends BaseTestViaCep {
@@ -32,5 +35,24 @@ public class ConsultaCepValido extends BaseTestViaCep {
         for (int i = 0; i < data.length; i++){
             System.out.println(data[i] + ": " + resposta.then().extract().path(data[i]).toString());
         }
+    }
+
+    @Test
+    public void testResponse(){
+        String cep = "91060900";
+        Response resposta =
+                given()
+                        .spec(requestSpec)
+                        .when()
+                        .get("/ws/" + cep + "/json/")
+                        .then()
+                        .spec(responseSpec)
+                        .extract().response();
+
+        createFile("OnlyKeys");
+        createEmptyValuesFile("OnlyKeys", resposta);
+
+        createFile("ResponseBody");
+        createResponseBodyFile("ResponseBody", resposta);
     }
 }
